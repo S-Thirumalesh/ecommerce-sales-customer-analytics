@@ -12,3 +12,6 @@ Desktop.ini
 
 # Excel temporary files
 ~$*
+
+# Raw data (download it from Kaggle, see README)
+data/raw/
