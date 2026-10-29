@@ -1,0 +1,39 @@
+// DAX measures for ecommerce_sales_dashboard.pbix
+// All measures live in the table _Measures.
+// No currency symbol: the dataset does not state a currency.
+
+Total Sales = SUM ( Sales[sales] )
+
+Total Profit = SUM ( Sales[profit] )
+
+Profit Margin % = DIVIDE ( [Total Profit], [Total Sales] )
+
+Orders = DISTINCTCOUNT ( Sales[order_id] )
+
+Customer Count = DISTINCTCOUNT ( Sales[customer_id] )
+
+Average Order Value = DIVIDE ( [Total Sales], [Orders] )
+
+Order Lines = COUNTROWS ( Sales )
+
+Units Sold = SUM ( Sales[quantity] )
+
+Avg Discount = AVERAGE ( Sales[discount] )
+
+High Discount Lines % =
+DIVIDE (
+    CALCULATE ( COUNTROWS ( Sales ), Sales[discount] >= 0.3 ),
+    COUNTROWS ( Sales )
+)
+
+High Discount Sales =
+CALCULATE ( [Total Sales], Sales[discount] >= 0.3 )
+
+High Discount Profit =
+CALCULATE ( [Total Profit], Sales[discount] >= 0.3 )
+
+Sales Last Year =
+CALCULATE ( [Total Sales], SAMEPERIODLASTYEAR ( 'Calendar'[Date] ) )
+
+Sales YoY % =
+DIVIDE ( [Total Sales] - [Sales Last Year], [Sales Last Year] )
