@@ -37,3 +37,32 @@ CALCULATE ( [Total Sales], SAMEPERIODLASTYEAR ( 'Calendar'[Date] ) )
 
 Sales YoY % =
 DIVIDE ( [Total Sales] - [Sales Last Year], [Sales Last Year] )
+
+
+
+Sales per Customer = DIVIDE ( [Total Sales], [Customer Count] )
+
+Sales % of Year =
+DIVIDE (
+    [Total Sales],
+    CALCULATE ( [Total Sales], ALLEXCEPT ( 'Calendar', 'Calendar'[Year] ) )
+)
+
+Loss-Making Products =
+COUNTROWS ( FILTER ( VALUES ( Products[product_name] ), [Total Profit] < -0.005 ) )
+
+Loss-Making Customers =
+COUNTROWS ( FILTER ( VALUES ( Sales[customer_id] ), [Total Profit] < -0.005 ) )
+
+// Calculated columns in Sales
+
+Discount Band =
+SWITCH (
+    TRUE (),
+    Sales[discount] = 0, "No discount",
+    Sales[discount] <= 0.2, "Up to 20%",
+    "30% or more"
+)
+
+Discount Band Order =
+SWITCH ( TRUE (), Sales[discount] = 0, 1, Sales[discount] <= 0.2, 2, 3 )
